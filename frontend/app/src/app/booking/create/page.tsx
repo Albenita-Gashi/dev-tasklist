@@ -1,43 +1,65 @@
 "use client"
-import { Button, DatePicker, DatePickerProps, Input, TimePicker } from "antd";
+import { Button, DatePicker, DatePickerProps, Input, TimePicker, message, notification } from "antd";
 import { UserOutlined, FieldTimeOutlined, CalendarOutlined, ProductOutlined } from '@ant-design/icons';
 import axios from "axios";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
 import { BookingType } from "../../../../types/BookingType";
 
-
-type BookingType1 = {
-    id: number,
-    doctor_name: string,
-    end_time: string,
-    service: string
-    date: Date,
-    start_time: string
-}
+type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const BookingList: React.FC = () => {
     const [booking, setBooking] = useState<BookingType>(new BookingType('', '', '', '', ''));
     const [start_time, setStart_time] = useState<Dayjs>();
     const [end_time, setEnd_time] = useState<Dayjs>();
     const [date, setDate] = useState<Dayjs>();
-    const [status, setStatus] = useState();
+    const [status, setStatus] = useState<boolean>(false);
+    const [statusMessage, setStatusMessage] = useState<string>("");
+    const [api, contextHolder] = notification.useNotification();
 
+    useEffect(() => {
+        console.log("status");
+        
+        openNotification("success", "Booked Successfully!", statusMessage);
+    }, [status])
+
+    const openNotification = (type: NotificationType, title: string, message: string) => {
+        notification.open({
+            message: title,
+            description: message,
+        });
+    };
     const insertData = () => {
         axios.post("http://host.docker.internal:5000/api/bookings", booking).then((res) => {
             console.log(res);
+            setStatus(!status)
+            setStatusMessage(res.data)
+            // openNotification1();
+            // openNotification("success", "Booked Successfully!", res.data);
         }).catch(e =>
-            console.error('Error inserting data:', e)
+            openNotification("error", "Error inserting data!", e)
         )
     }
-    
+
     const onChangeDatePicker: DatePickerProps['onChange'] = (date, dateString) => {
         setDate(date)
-        setBooking({ ...booking, date: date.format('YYYY-MM-DD')})
+        setBooking({ ...booking, date: date.format('YYYY-MM-DD') })
     };
-
+    const openNotification1 = () => {
+        notification.open({
+          message: 'Notification Title',
+          description:
+            'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+          onClick: () => {
+            console.log('Notification Clicked!');
+          },
+        });
+      };
     return (
         <section>
+            <Button type="primary" onClick={openNotification1}>
+                Open the notification box
+            </Button>
             <Input size="large"
                 placeholder="Service" value={booking?.service}
                 onChange={(e) => setBooking({ ...booking, service: e.target.value })}
@@ -48,23 +70,23 @@ const BookingList: React.FC = () => {
                 onChange={(e) => setBooking({ ...booking, doctor_name: e.target.value })}
                 prefix={<UserOutlined />}
             />
-            <TimePicker 
+            <TimePicker
                 placeholder="Start Time"
-                size="large" 
-                format="h:mm a" 
+                size="large"
+                format="h:mm a"
                 onChange={(time: Dayjs, timeString: string) => {
-                    setBooking({ ...booking, start_time: timeString}),
-                    setStart_time(time)
+                    setBooking({ ...booking, start_time: timeString }),
+                        setStart_time(time)
                 }}
-                value = {start_time}
+                value={start_time}
             />
-            <TimePicker 
+            <TimePicker
                 placeholder="End Time"
-                size="large" 
+                size="large"
                 format="h:mm a"
                 onChange={(time: Dayjs, timeString: string) => {
                     setBooking({ ...booking, end_time: timeString }),
-                    setEnd_time(time)
+                        setEnd_time(time)
                 }}
                 value={end_time}
             />
