@@ -4,6 +4,7 @@ import { UserOutlined, FieldTimeOutlined, CalendarOutlined, ProductOutlined } fr
 import axios from "axios";
 import { useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
+import { BookingType } from "../../../../types/BookingType";
 
 
 type BookingType1 = {
@@ -13,16 +14,6 @@ type BookingType1 = {
     service: string
     date: Date,
     start_time: string
-}
-
-export class BookingType {
-    constructor(
-        public doctor_name: string,
-        public service: string,
-        public date: Date,
-        public start_time: string,
-        public end_time: string
-        ) { }
 }
 
 const BookingList: React.FC = () => {
