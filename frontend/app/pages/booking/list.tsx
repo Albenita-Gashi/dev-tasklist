@@ -12,31 +12,17 @@ type BookingType = {
     start_time: string
 }
 
-async function getBookings() {
-    const res = await fetch('http://host.docker.internal:5000/api/bookings', { cache: 'no-store', mode: 'no-cors' })
-    console.log(res);
-    
-    // if (!res.ok) {
-    //     throw new Error('Failed to fetch data')
-    // }
-
-    return res.json()
-}
-
 const BookingList: React.FC = () => {
 
     const [bookings, setBookings] = useState<BookingType[] | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                axios.get("http://host.docker.internal:5000/api/bookings").then((res) => {
-                    setBookings(res.data);
-                })
-                //const bookingData = await getBookings();
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+            axios.get("http://host.docker.internal:5000/api/bookings").then((res) => {
+                setBookings(res.data);
+            }).catch(e =>
+                console.error('Error fetching data:', e)
+            )
         };
         fetchData();
     }, []);

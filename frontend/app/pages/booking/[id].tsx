@@ -1,36 +1,26 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 type BookingType = {
     doctor_name: string,
     end_time: string,
-    service : string
-}
-
-async function getBooking(id) {
-    const res = await fetch('http://host.docker.internal:5000/api/booking/' + id, { cache: 'no-store', mode: 'no-cors' })
-
-    if (!res.ok) {
-        throw new Error('Failed to fetch data')
-    }
-
-    return res.json()
+    service: string
 }
 
 const BookingList: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const [booking, setBooking] = useState<BookingType | null>(null);
-    
+
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const bookingData = await getBooking(id);
-                setBooking(bookingData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+            axios.get('http://host.docker.internal:5000/api/booking/' + id).then((res) => {
+                setBooking(res.data);
+            }).catch(e =>
+                console.error('Error fetching data:', e)
+            )
         };
         if (id) {
             fetchData();
@@ -38,7 +28,7 @@ const BookingList: React.FC = () => {
     }, [id]);
 
     const handleBack = () => {
-        router.push("/"); // assuming you want to go to the root page
+        router.push("/");
     };
 
     if (!booking) {
