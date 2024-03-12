@@ -1,3 +1,4 @@
+"use client"
 import axios from "axios";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
@@ -28,19 +29,19 @@ const BookingList: React.FC = () => {
     }, []);
 
     return (
-        <div>
+        <section>
             {
                 bookings != null ? bookings.map(item => {
                     return (
                         <div key={item.id}>
-                            <Link href={"booking/" + item.id}>A Booking on {item.date} starting at {item.start_time}</Link>
+                            <Link href={"/booking/" + item.id}>A Booking on {item.date} starting at {item.start_time}</Link>
                         </div>
                     )
                 }) : (
                     <p>No bookings found</p>
                 )
             }
-        </div>
+        </section>
     );
 };
 

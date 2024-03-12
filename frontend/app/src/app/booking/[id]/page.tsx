@@ -1,6 +1,7 @@
+"use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 type BookingType = {
@@ -9,9 +10,9 @@ type BookingType = {
     service: string
 }
 
-const BookingList: React.FC = () => {
+const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = params;
     const [booking, setBooking] = useState<BookingType | null>(null);
 
     useEffect(() => {
