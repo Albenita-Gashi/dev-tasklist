@@ -4,12 +4,12 @@ import { UserOutlined, FieldTimeOutlined, CalendarOutlined, ProductOutlined } fr
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
-import { BookingType } from "../../../../types/BookingType";
+import { BookingType } from "@/types/ModelTypes";
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const BookingList: React.FC = () => {
-    const [booking, setBooking] = useState<BookingType>(new BookingType('', '', '', '', ''));
+    const [booking, setBooking] = useState<BookingType>(new BookingType(1, '', '', '', '', ''));
     const [start_time, setStart_time] = useState<Dayjs>();
     const [end_time, setEnd_time] = useState<Dayjs>();
     const [date, setDate] = useState<Dayjs>();

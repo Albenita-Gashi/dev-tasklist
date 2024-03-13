@@ -3,12 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-
-type BookingType = {
-    doctor_name: string,
-    end_time: string,
-    service: string
-}
+import { BookingType } from '@/types/ModelTypes';
 
 const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
     const router = useRouter();
