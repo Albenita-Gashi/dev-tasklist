@@ -27,15 +27,17 @@ const BookAppointment: React.FC = () => {
             setTimeout(() => {
                 router.push("/booking");
             }, 2000);
+        }).catch(e => {
+            openNotification("error", e.response.data.error)
         })
-            .catch(e => {
-                openNotification("error", e.response.data.error)
-            })
     }
 
     const onChangeDatePicker: DatePickerProps['onChange'] = (date, dateString) => {
         setDate(date)
-        setBooking({ ...booking, date: date.format('YYYY-MM-DD') })
+        if (date == null)
+            setBooking({ ...booking, date: '' })
+        else
+            setBooking({ ...booking, date: date.format('YYYY-MM-DD') })
     };
     return (
         <section className="book-wrapper">
@@ -61,6 +63,7 @@ const BookAppointment: React.FC = () => {
                         }}
                         value={date}
                         onChange={onChangeDatePicker}
+                        minDate={dayjs(dayjs().format('YYYY-MM-DD'), "YYYY-MM-DD")}
                     />
                     <div>
                         <TimePicker
@@ -71,7 +74,7 @@ const BookAppointment: React.FC = () => {
                                 setBooking({ ...booking, start_time: timeString.toString().toUpperCase() }),
                                     setStart_time(time),
                                     console.log(timeString);
-                                    
+
                             }}
                             needConfirm={false}
                             value={start_time}
