@@ -33,11 +33,12 @@ const BookingList: React.FC = ({ params }: any) => {
 
     return (
         <div className='bookedCard'>
+            <div className='book-backgroundImg'></div>
             <Card
                 title={"Doctor: " + booking.doctor_name}
                 bordered={false}
                 actions={[
-                    <Button key={booking.id} onClick={() => handleBack()}>Back</Button>
+                    <Button type='primary' className='book-button' key={booking.id} onClick={() => handleBack()}>Back</Button>
                 ]}>
                 <p className='bookedCard-description'>This Booking is with <b>{booking.doctor_name}</b> For <b>{booking.service}</b> and it ends on <b>{booking.end_time}</b></p>
             </Card>

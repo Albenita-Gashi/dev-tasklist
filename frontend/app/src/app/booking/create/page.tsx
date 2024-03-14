@@ -29,7 +29,7 @@ const BookAppointment: React.FC = () => {
             }, 2000);
         })
             .catch(e => {
-                openNotification("error", "Something went wrong! Please try again")
+                openNotification("error", e.response.data.error)
             })
     }
 

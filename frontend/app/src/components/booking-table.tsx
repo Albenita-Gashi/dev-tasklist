@@ -30,7 +30,7 @@ const BookingTable = (props: any) => {
                 width={100}
                 title={
                     <Space align="end">
-                        <Button onClick={() => router.push("/booking/create")}>Book Appointment</Button>
+                        <Button type='primary' className='book-button' onClick={() => router.push("/booking/create")}>Book Appointment</Button>
                     </Space>
                 }
                 key="action"
