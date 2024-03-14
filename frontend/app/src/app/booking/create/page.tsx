@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
 import { BookingType } from "@/types/ModelTypes";
-import useDidMountEffect from "@/components/componentDidMountEffect";
+import { useRouter } from "next/navigation";
 
 type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
@@ -14,31 +14,29 @@ const BookAppointment: React.FC = () => {
     const [start_time, setStart_time] = useState<Dayjs>();
     const [end_time, setEnd_time] = useState<Dayjs>();
     const [date, setDate] = useState<Dayjs>();
-    const [status, setStatus] = useState<boolean>(false);
+    const [status, setStatus] = useState<boolean | null>(null);
     const [statusMessage, setStatusMessage] = useState<string>("");
     const [api, contextHolder] = notification.useNotification();
+    const router = useRouter();
 
-    useEffect(() => {
-        console.log(status);
-    }, [status])
-
-    useDidMountEffect(() => {
-        openNotification("success", "Booked Successfully!", statusMessage);
-    }, [status]);
-
-    const openNotification = (type: NotificationType, title: string, message: string) => {
+    const openNotification = (type: NotificationType, title: string) => {
         notification.open({
             message: title,
-            description: message,
+            type: type
         });
     };
+
     const insertData = () => {
         axios.post("http://host.docker.internal:5000/api/bookings", booking).then((res) => {
-            setStatus(!status)
             setStatusMessage(res.data)
-        }).catch(e =>
-            openNotification("error", "Error inserting data!", e)
-        )
+            openNotification("success", "Booked Successfully!");
+            setTimeout(() => {
+                router.push("/booking");
+            }, 2000);
+        })
+            .catch(e => {
+                openNotification("error", "Something Went wrong! Please try again")
+            })
     }
 
     const onChangeDatePicker: DatePickerProps['onChange'] = (date, dateString) => {
@@ -79,6 +77,7 @@ const BookAppointment: React.FC = () => {
                                 setBooking({ ...booking, start_time: timeString }),
                                     setStart_time(time)
                             }}
+                            needConfirm={false}
                             value={start_time}
                         />
                         <TimePicker
@@ -89,11 +88,12 @@ const BookAppointment: React.FC = () => {
                                 setBooking({ ...booking, end_time: timeString }),
                                     setEnd_time(time)
                             }}
+                            needConfirm={false}
                             value={end_time}
                         />
                     </div>
                 </div>
-                <Button type="primary" onClick={() => insertData()}>Book Appointment</Button>
+                <Button type="primary" size="large" className="book-button" onClick={() => insertData()}>Book Appointment</Button>
             </div>
         </section>
     );

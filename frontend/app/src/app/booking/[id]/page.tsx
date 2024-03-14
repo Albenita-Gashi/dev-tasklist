@@ -1,9 +1,9 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { BookingType } from '@/types/ModelTypes';
+import { Button, Card } from 'antd';
 
 const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
     const router = useRouter();
@@ -24,7 +24,7 @@ const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
     }, [id]);
 
     const handleBack = () => {
-        router.push("/");
+        router.push("/booking");
     };
 
     if (!booking) {
@@ -32,9 +32,15 @@ const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
     }
 
     return (
-        <div>
-            <p>This Booking is with {booking.doctor_name} For {booking.service} and it ends on {booking.end_time}</p>
-            <button onClick={() => handleBack()}>Back</button>
+        <div className='bookedCard'>
+            <Card
+                title={"Doctor: " + booking.doctor_name}
+                bordered={false}
+                actions={[
+                    <Button onClick={() => handleBack()}>Back</Button>
+                ]}>
+                <p className='bookedCard-description'>This Booking is with <b>{booking.doctor_name}</b> For <b>{booking.service}</b> and it ends on <b>{booking.end_time}</b></p>
+            </Card>
         </div>
     );
 };

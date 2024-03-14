@@ -21,6 +21,14 @@ body {
   background-color: #f1f3f4;
 }
 
+.ant-btn-primary:not([disabled]) {
+  background:#1677ff !important;
+}
+
+.ant-btn-primary:not([disabled]):hover {
+  background:#1f4ce0 !important;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

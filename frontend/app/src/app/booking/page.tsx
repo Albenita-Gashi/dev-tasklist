@@ -22,29 +22,16 @@ const BookingList: React.FC = () => {
     }, []);
     const buildData = () => {
         const data: BookingTableType[] = [];
-        // if (bookings == null)
-        //     return data;
         for (var item of bookings) {
-            data.push(new BookingTableType(item.id, `A Booking on ${item.date} starting at ${item.start_time}`))
+            data.push(new BookingTableType(item.id, `A Booking on ${item.date.split("T")[0]} starting at ${item.start_time}`))
         }
-        console.log(data);
-
         return data;
     }
     return (
-        <section>
-            <BookingTable data={buildData()} />
-            {
-                bookings != null ? bookings.map(item => {
-                    return (
-                        <div key={item.id}>
-
-                        </div>
-                    )
-                }) : (
-                    <p>No bookings found</p>
-                )
-            }
+        <section className="bookings">
+            <div>
+                <BookingTable data={buildData()} />
+            </div>
         </section>
     );
 };

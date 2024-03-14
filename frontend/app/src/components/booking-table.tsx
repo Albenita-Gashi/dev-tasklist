@@ -8,29 +8,17 @@ const { Column, ColumnGroup } = Table;
 
 const BookingTable = (props) => {
     const { data } = props;
-    // const columns: TableProps<BookingTableType>['columns'] = [
-    //     {
-    //         title: 'Booking',
-    //         dataIndex: 'message',
-    //         key: 'message',
-    //         render: (text, record) => <Link href={"/booking/" + record.key}>{text}</Link>,
-    //     },
-    // ]
-    // useEffect(() => {
-    //     for (const item of data) {
-    //         convertData.push(
-    //             {
-    //                 title: 'Booking',
-    //                 dataIndex: 'message',
-    //                 key: 'message',
-    //                 render: (text) => <Link href={"/booking/" + data.id}>{text}</Link>,
-    //               },
-    //         )
-    //     }
-
-    // }, [])
+    const columns: TableProps<BookingTableType>['columns'] = [
+        {
+            title: 'All Your Bookings',
+            dataIndex: 'message',
+            key: 'message',
+            render: (text, record) => <Link href={"/booking/" + record.key}>{text}</Link>,
+        },
+    ]
+    
     return (
-        <Table  dataSource={data}>
+        <Table columns={columns} dataSource={data}>
             <Column title="Booking" dataIndex="message" key="message" />
             <Column
                 key="action"
