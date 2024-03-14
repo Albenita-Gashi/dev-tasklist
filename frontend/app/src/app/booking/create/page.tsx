@@ -29,7 +29,7 @@ const BookAppointment: React.FC = () => {
             }, 2000);
         })
             .catch(e => {
-                openNotification("error", "Something Went wrong! Please try again")
+                openNotification("error", "Something went wrong! Please try again")
             })
     }
 
@@ -66,10 +66,12 @@ const BookAppointment: React.FC = () => {
                         <TimePicker
                             placeholder="Start Time"
                             size="large"
-                            format="h:mm a"
+                            format="hh:mm a"
                             onChange={(time, timeString) => {
-                                setBooking({ ...booking, start_time: timeString[0] }),
-                                    setStart_time(time)
+                                setBooking({ ...booking, start_time: timeString.toString().toUpperCase() }),
+                                    setStart_time(time),
+                                    console.log(timeString);
+                                    
                             }}
                             needConfirm={false}
                             value={start_time}
@@ -77,9 +79,9 @@ const BookAppointment: React.FC = () => {
                         <TimePicker
                             placeholder="End Time"
                             size="large"
-                            format="h:mm a"
+                            format="hh:mm a"
                             onChange={(time, timeString) => {
-                                setBooking({ ...booking, end_time: timeString[0] }),
+                                setBooking({ ...booking, end_time: timeString.toString().toUpperCase() }),
                                     setEnd_time(time)
                             }}
                             needConfirm={false}

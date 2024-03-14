@@ -63,6 +63,21 @@ app.post('/api/bookings', async (req, res) => {
   }
 });
 
+app.delete('/api/bookings/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query('DELETE FROM bookings WHERE id = ?', [id]);
+    if (result.affectedRows === 0) {
+      res.status(404).json({ message: 'Booking not found' });
+    } else {
+      res.status(200).json({ message: 'Booking deleted successfully' });
+    }
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

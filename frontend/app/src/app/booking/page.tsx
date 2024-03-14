@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 const BookingList: React.FC = () => {
 
     const [bookings, setBookings] = useState<BookingType[] | []>([]);
+    const [data, setData] = useState<BookingTableType[] | []>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,17 +21,29 @@ const BookingList: React.FC = () => {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        buildData();
+    }, [bookings])
+
     const buildData = () => {
-        const data: BookingTableType[] = [];
+        const currentData: BookingTableType[] = [];
         for (var item of bookings) {
-            data.push(new BookingTableType(item.id, `A Booking on ${item.date.split("T")[0]} starting at ${item.start_time}`))
+            currentData.push(new BookingTableType(item.id, `A Booking on ${item.date.split("T")[0]} starting at ${item.start_time}`))
         }
-        return data;
+        setData(currentData)
+    }
+    const deleted = () => {
+        axios.get("http://host.docker.internal:5000/api/bookings").then((res) => {
+            setBookings(res.data);
+        }).catch(e =>
+            console.error('Error fetching data:', e)
+        )
     }
     return (
         <section className="bookings">
             <div>
-                <BookingTable data={buildData()} />
+                <BookingTable data={data} deleted={deleted} />
             </div>
         </section>
     );
