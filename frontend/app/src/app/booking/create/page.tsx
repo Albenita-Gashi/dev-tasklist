@@ -4,19 +4,14 @@ import { UserOutlined, FieldTimeOutlined, CalendarOutlined, ProductOutlined } fr
 import axios from "axios";
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
-import { BookingType } from "@/types/ModelTypes";
+import { BookingType, NotificationType } from "@/types/ModelTypes";
 import { useRouter } from "next/navigation";
-
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const BookAppointment: React.FC = () => {
     const [booking, setBooking] = useState<BookingType>(new BookingType(1, '', '', '', '', ''));
     const [start_time, setStart_time] = useState<Dayjs>();
     const [end_time, setEnd_time] = useState<Dayjs>();
     const [date, setDate] = useState<Dayjs>();
-    const [status, setStatus] = useState<boolean | null>(null);
-    const [statusMessage, setStatusMessage] = useState<string>("");
-    const [api, contextHolder] = notification.useNotification();
     const router = useRouter();
 
     const openNotification = (type: NotificationType, title: string) => {
@@ -28,7 +23,6 @@ const BookAppointment: React.FC = () => {
 
     const insertData = () => {
         axios.post("http://host.docker.internal:5000/api/bookings", booking).then((res) => {
-            setStatusMessage(res.data)
             openNotification("success", "Booked Successfully!");
             setTimeout(() => {
                 router.push("/booking");
@@ -73,8 +67,8 @@ const BookAppointment: React.FC = () => {
                             placeholder="Start Time"
                             size="large"
                             format="h:mm a"
-                            onChange={(time: Dayjs, timeString: string) => {
-                                setBooking({ ...booking, start_time: timeString }),
+                            onChange={(time, timeString) => {
+                                setBooking({ ...booking, start_time: timeString[0] }),
                                     setStart_time(time)
                             }}
                             needConfirm={false}
@@ -84,8 +78,8 @@ const BookAppointment: React.FC = () => {
                             placeholder="End Time"
                             size="large"
                             format="h:mm a"
-                            onChange={(time: Dayjs, timeString: string) => {
-                                setBooking({ ...booking, end_time: timeString }),
+                            onChange={(time, timeString) => {
+                                setBooking({ ...booking, end_time: timeString[0] }),
                                     setEnd_time(time)
                             }}
                             needConfirm={false}

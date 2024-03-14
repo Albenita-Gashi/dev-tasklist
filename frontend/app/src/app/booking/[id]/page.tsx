@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { BookingType } from '@/types/ModelTypes';
 import { Button, Card } from 'antd';
 
-const BookingList: React.FC = ({ params }: { params: { id: number } }) => {
+const BookingList: React.FC = ({ params }: any) => {
     const router = useRouter();
     const { id } = params;
     const [booking, setBooking] = useState<BookingType | null>(null);

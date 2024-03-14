@@ -6,7 +6,7 @@ import type { TableProps } from 'antd';
 
 const { Column, ColumnGroup } = Table;
 
-const BookingTable = (props) => {
+const BookingTable = (props : any) => {
     const { data } = props;
     const columns: TableProps<BookingTableType>['columns'] = [
         {
@@ -16,7 +16,7 @@ const BookingTable = (props) => {
             render: (text, record) => <Link href={"/booking/" + record.key}>{text}</Link>,
         },
     ]
-    
+
     return (
         <Table columns={columns} dataSource={data}>
             <Column title="Booking" dataIndex="message" key="message" />

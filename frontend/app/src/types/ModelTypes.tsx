@@ -17,3 +17,5 @@ export class BookingTableType {
         public message: string,
     ) { }
 }
+
+export type NotificationType = 'success' | 'info' | 'warning' | 'error';
