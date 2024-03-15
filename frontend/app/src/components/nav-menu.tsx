@@ -13,7 +13,7 @@ const items: MenuProps['items'] = [
             </Link>
         ),
         key: 'home',
-        icon: <HomeOutlined />
+        icon: <HomeOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
     },
     {
         label: (
@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
             </Link>
         ),
         key: 'bookings',
-        icon: <BookOutlined />,
+        icon: <BookOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />,
     },
 ];
 

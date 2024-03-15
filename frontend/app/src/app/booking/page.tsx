@@ -1,7 +1,7 @@
 "use client"
 import BookingTable from "@/components/booking-table";
 import { BookingTableType, BookingType } from "@/types/ModelTypes";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
 
@@ -13,9 +13,9 @@ const BookingList: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            axios.get("http://host.docker.internal:5000/api/bookings").then((res) => {
+            axios.get("http://host.docker.internal:5000/api/bookings").then((res : AxiosResponse) => {
                 setBookings(res.data);
-            }).catch(e =>
+            }).catch((e : any) =>
                 console.error('Error fetching data:', e)
             )
         };
@@ -34,9 +34,9 @@ const BookingList: React.FC = () => {
         setData(currentData)
     }
     const deleted = () => {
-        axios.get("http://host.docker.internal:5000/api/bookings").then((res) => {
+        axios.get("http://host.docker.internal:5000/api/bookings").then((res : AxiosResponse) => {
             setBookings(res.data);
-        }).catch(e =>
+        }).catch((e: any) =>
             console.error('Error fetching data:', e)
         )
     }

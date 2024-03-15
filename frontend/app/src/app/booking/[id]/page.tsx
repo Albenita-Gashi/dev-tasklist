@@ -1,5 +1,5 @@
 "use client";
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { BookingType } from '@/types/ModelTypes';
@@ -12,9 +12,9 @@ const BookingList: React.FC = ({ params }: any) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            axios.get('http://host.docker.internal:5000/api/booking/' + id).then((res) => {
+            axios.get('http://host.docker.internal:5000/api/booking/' + id).then((res : AxiosResponse) => {
                 setBooking(res.data);
-            }).catch(e =>
+            }).catch((e : any)=>
                 console.error('Error fetching data:', e)
             )
         };

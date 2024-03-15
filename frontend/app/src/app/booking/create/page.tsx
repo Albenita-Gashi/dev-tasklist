@@ -1,7 +1,7 @@
 "use client"
 import { Button, DatePicker, DatePickerProps, Input, TimePicker, message, notification } from "antd";
 import { UserOutlined, FieldTimeOutlined, CalendarOutlined, ProductOutlined } from '@ant-design/icons';
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from "dayjs";
 import { BookingType, NotificationType } from "@/types/ModelTypes";
@@ -22,17 +22,17 @@ const BookAppointment: React.FC = () => {
     };
 
     const insertData = () => {
-        axios.post("http://host.docker.internal:5000/api/bookings", booking).then((res) => {
+        axios.post("http://host.docker.internal:5000/api/bookings", booking).then((res : AxiosResponse) => {
             openNotification("success", "Booked Successfully!");
             setTimeout(() => {
                 router.push("/booking");
             }, 2000);
-        }).catch(e => {
+        }).catch((e : any) => {
             openNotification("error", e.response.data.error)
         })
     }
 
-    const onChangeDatePicker: DatePickerProps['onChange'] = (date, dateString) => {
+    const onChangeDatePicker: DatePickerProps['onChange'] = (date : Dayjs) => {
         setDate(date)
         if (date == null)
             setBooking({ ...booking, date: '' })
@@ -47,13 +47,13 @@ const BookAppointment: React.FC = () => {
                 <div className="book-inputs">
                     <Input size="large"
                         placeholder="Service" value={booking?.service}
-                        onChange={(e) => setBooking({ ...booking, service: e.target.value })}
-                        prefix={<ProductOutlined />}
+                        onChange={(e : React.ChangeEvent<HTMLInputElement>) => setBooking({ ...booking, service: e.target.value })}
+                        prefix={<ProductOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />}
                     />
                     <Input size="large"
                         placeholder="Doctor Name" value={booking?.doctor_name}
-                        onChange={(e) => setBooking({ ...booking, doctor_name: e.target.value })}
-                        prefix={<UserOutlined />}
+                        onChange={(e : React.ChangeEvent<HTMLInputElement>) => setBooking({ ...booking, doctor_name: e.target.value })}
+                        prefix={<UserOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />}
                     />
                     <DatePicker
                         size="large"
@@ -70,11 +70,10 @@ const BookAppointment: React.FC = () => {
                             placeholder="Start Time"
                             size="large"
                             format="hh:mm a"
-                            onChange={(time, timeString) => {
+                            onChange={(time : any, timeString : string | string[]) => {
                                 setBooking({ ...booking, start_time: timeString.toString().toUpperCase() }),
                                     setStart_time(time),
                                     console.log(timeString);
-
                             }}
                             needConfirm={false}
                             value={start_time}
@@ -83,7 +82,7 @@ const BookAppointment: React.FC = () => {
                             placeholder="End Time"
                             size="large"
                             format="hh:mm a"
-                            onChange={(time, timeString) => {
+                            onChange={(time : any, timeString : string | string[]) => {
                                 setBooking({ ...booking, end_time: timeString.toString().toUpperCase() }),
                                     setEnd_time(time)
                             }}
